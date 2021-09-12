@@ -3,6 +3,8 @@ const handler = require('../../helpers/handleReqRes')
 const env = require('./../../helpers/env')
 
 const {validation} = require('./../../helpers/utilities')
+const data = require('../../lib/data')
+
 // module scafolding 
 const handlers = {}
 
@@ -17,16 +19,32 @@ handlers.userHandler = (requestProperties,callback) => {
 
 handler._users = {} 
 handler._users.post = (requestProperties,callback) => {
-    const firstName = typeof(requestProperties.body.firstName) === 'string' 
-    && requestProperties.body.firstName.trim().length > 0 ? requestProperties.body.firstName :false
-    let dummyName = "Mahbub"
-    let dummyName2 = "Alam"
-    const validate = validation({
-        firstName:["string|min:4|max:6",dummyName],
-        lastName:["string|max:3",dummyName2]
+
+  const firstName = typeof(requestProperties.body.firstName) === 'string' 
+  && requestProperties.body.firstName.trim().length > 0 ? requestProperties.body.firstName :false
+
+  const lastName = typeof(requestProperties.body.lastName) === 'string' 
+  && requestProperties.body.lastName.trim().length > 0 ? requestProperties.body.lastName :false
+
+  const phone = typeof(requestProperties.body.phone) === 'string' 
+  && requestProperties.body.phone.trim().length === 11 ? requestProperties.body.phone :false
+
+  const password = typeof(requestProperties.body.password) === 'string' 
+  && requestProperties.body.password.trim().length > 0 ? requestProperties.body.password :false
+
+  const tosAgremeent = typeof(requestProperties.body.tosAgremeent) === 'boolean' 
+  && requestProperties.body.tosAgremeent.trim().length > 0 ? requestProperties.body.tosAgremeent :false
+  
+  if(firstName && lastName && phone && password && tosAgremeent){
+    data.read('users')
+  }else{
+    callback(400,{
+      error:'Validation Failed'
     })
-    console.log(validate);
+  }
+    
 }
+
 handler._users.get = (requestProperties,callback) => {}
 handler._users.put = (requestProperties,callback) => {}
 handler._users.delete = (requestProperties,callback) => {}
