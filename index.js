@@ -9,14 +9,21 @@ const data = require('./lib/data')
 const app = {}
 
 //Testing File System
-//@ Todo  remove later
-// data.create('test','newFile',{'name':"Bangladesh",'lang':'Bangla'},(err)=>{
+
+// data.create('test','newFile',{'name':"Evan",'age':27},(err,result)=>{
+//   console.log(err,result);
+// })
+// data.read('test','newFile',(err,data)=>{
+//   console.log(err,data);
+// })
+
+// data.update('test','newFile',{'name':'Safa','age':7},(err)=>{
 //   console.log(err);
 // })
 
-data.read('test','newFile',(err,data)=>{
-  console.log(err,data);
-})
+// data.delete('test','newFile',(err,res)=>{
+//   console.log(err,res);
+// })
 
 // create server 
 app.createServer = () => {
