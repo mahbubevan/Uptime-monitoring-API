@@ -1,0 +1,8 @@
+{
+  "name": "Uptime Monitoring API",
+  "packageManager": "yarn@3.0.2",
+  "scripts": {
+    "start": "NODE_ENV=development nodemon index",
+    "production":"NODE_ENV=production nodemon index"
+  }
+}
