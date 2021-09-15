@@ -1,3 +1,7 @@
+//Dependencies 
+const crypto = require('crypto')
+const env = require('../helpers/env')
+// scaffolding
 const utilities = {}
 
 // parse JSON string to Object 
@@ -10,6 +14,16 @@ utilities.parseJSON = (jsonString) => {
     }
 
     return output
+}
+
+// Password Hasing 
+utilities.hash = (string) => {
+  if (typeof(string) === 'string' && string.length > 0) {
+    let hash = crypto.createHmac('sha256',env.secretKey)
+                      .update(string).digest('hex')
+
+    return hash
+  }
 }
 
 // validation 

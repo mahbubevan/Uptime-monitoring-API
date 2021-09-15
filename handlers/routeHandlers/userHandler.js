@@ -2,7 +2,7 @@
 const handler = require('../../helpers/handleReqRes')
 const env = require('./../../helpers/env')
 
-const {validation} = require('./../../helpers/utilities')
+const {hash} = require('./../../helpers/utilities')
 const data = require('../../lib/data')
 
 // module scafolding 
@@ -34,9 +34,20 @@ handler._users.post = (requestProperties,callback) => {
 
   const tosAgremeent = typeof(requestProperties.body.tosAgremeent) === 'boolean' 
   && requestProperties.body.tosAgremeent.trim().length > 0 ? requestProperties.body.tosAgremeent :false
-  
+
   if(firstName && lastName && phone && password && tosAgremeent){
-    data.read('users')
+    data.read('users',phone,(err,res)=>{
+      
+      if (err) {
+        let userObject = {
+          firstName,lastName,phone,
+        }
+      }else{
+        callback(200,{
+          msg:"User Already Resigtered"
+        })
+      }
+    })
   }else{
     callback(400,{
       error:'Validation Failed'
