@@ -23,6 +23,8 @@ utilities.hash = (string) => {
                       .update(string).digest('hex')
 
     return hash
+  }else{
+      return false 
   }
 }
 

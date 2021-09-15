@@ -3,6 +3,7 @@ const handler = require('../../helpers/handleReqRes')
 const env = require('./../../helpers/env')
 
 const {hash} = require('./../../helpers/utilities')
+const {parseJSON} = require('./../../helpers/utilities')
 const data = require('../../lib/data')
 
 // module scafolding 
@@ -19,7 +20,6 @@ handlers.userHandler = (requestProperties,callback) => {
 
 handler._users = {} 
 handler._users.post = (requestProperties,callback) => {
-
   const firstName = typeof(requestProperties.body.firstName) === 'string' 
   && requestProperties.body.firstName.trim().length > 0 ? requestProperties.body.firstName :false
 
@@ -32,18 +32,31 @@ handler._users.post = (requestProperties,callback) => {
   const password = typeof(requestProperties.body.password) === 'string' 
   && requestProperties.body.password.trim().length > 0 ? requestProperties.body.password :false
 
-  const tosAgremeent = typeof(requestProperties.body.tosAgremeent) === 'boolean' 
-  && requestProperties.body.tosAgremeent.trim().length > 0 ? requestProperties.body.tosAgremeent :false
-
-  if(firstName && lastName && phone && password && tosAgremeent){
+  const tosAgreement = typeof(requestProperties.body.tosAgreement) === 'boolean' ? requestProperties.body.tosAgreement :false
+  console.log(tosAgreement,password,firstName,lastName);
+  if(firstName && lastName && phone && password && tosAgreement){
     data.read('users',phone,(err,res)=>{
       
       if (err) {
-        let userObject = {
-          firstName,lastName,phone,
+        const userObject = {
+          firstName,lastName,phone, 
+          password:hash(password),
+          tosAgreement
         }
+
+        data.create('users',phone,userObject,(err)=>{
+          if (!err) {
+            callback(200,{
+              message:'User created successfully'
+            })
+          }else{
+            callback(500,{
+              error:'Couldn\'t create user'
+            })
+          }
+        })
       }else{
-        callback(200,{
+        callback(409,{
           msg:"User Already Resigtered"
         })
       }
@@ -56,7 +69,30 @@ handler._users.post = (requestProperties,callback) => {
     
 }
 
-handler._users.get = (requestProperties,callback) => {}
+handler._users.get = (requestProperties,callback) => {
+  const phone = typeof(requestProperties.queryStringObject.phone) === 'string' 
+  && requestProperties.queryStringObject.phone.trim().length === 11 ? requestProperties.queryStringObject.phone :false
+
+  if (phone) {
+    data.read("users",phone,(err,result)=>{
+      const user = {...parseJSON(result)}
+      delete user.password
+      if (!err && user) {
+        callback(200,{
+          data:user
+        })
+      }else{
+        callback(404,{
+          error:"User Not Found"
+        })
+      }
+    })
+  }else{
+    callback(404,{
+      error:"User Not Found"
+    })
+  }
+}
 handler._users.put = (requestProperties,callback) => {}
 handler._users.delete = (requestProperties,callback) => {}
 
