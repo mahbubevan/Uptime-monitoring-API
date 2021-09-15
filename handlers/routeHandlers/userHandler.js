@@ -5,6 +5,7 @@ const env = require('./../../helpers/env')
 const {hash} = require('./../../helpers/utilities')
 const {parseJSON} = require('./../../helpers/utilities')
 const data = require('../../lib/data')
+const {verifyToken} = require('./tokenHandler')
 
 // module scafolding 
 const handlers = {}

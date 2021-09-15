@@ -28,6 +28,25 @@ utilities.hash = (string) => {
   }
 }
 
+// create random string
+utilities.createRandomString = (strlen) => {
+  let len = strlen 
+  len = typeof(strlen) === 'number' && strlen > 0 ? strlen :false 
+
+  if (len) {
+    let char = 'ABCDEFGHIJKLMNIOPQRDTUVWXYZ123456789abcdefghijklmnopqrstuvwxyz'
+    let output = ''
+    for (let index = 0; index < len; index++) {
+      let random = char.charAt(Math.floor(Math.random() * char.length))
+      output += random
+    }
+    return output
+  }else{
+    return false 
+  }
+}
+
+
 // validation 
 utilities.validation = (obj) => {
     for (const [key, value] of Object.entries(obj)) {

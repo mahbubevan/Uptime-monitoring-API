@@ -5,14 +5,18 @@ env.development = {
   port:3000,
   envName:'development',
   acceptedMethods:['get','post','put','delete'],
-  secretKey:"devSecret"
+  secretKey:"devSecret",
+  tokenExpire: Date.now() + 60 * 60 * 1000,
+  tokenLength:20
 }
 
 env.production = {
   port:5000,
   envName:'production',
   acceptedMethods:['get','post','put','delete'],
-  secretKey:"productionSecret"
+  secretKey:"productionSecret",
+  tokenExpire: Date.now() + 60 * 60 * 1000,
+  tokenLength:20
 }
 
 const currentEnvironment = typeof(process.env.NODE_ENV) === 'string' ? process.env.NODE_ENV : 'development'
