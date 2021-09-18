@@ -7,7 +7,8 @@ env.development = {
   acceptedMethods:['get','post','put','delete'],
   secretKey:"devSecret",
   tokenExpire: Date.now() + 60 * 60 * 1000,
-  tokenLength:20
+  tokenLength:20,
+  maxCheck:5
 }
 
 env.production = {
@@ -16,7 +17,8 @@ env.production = {
   acceptedMethods:['get','post','put','delete'],
   secretKey:"productionSecret",
   tokenExpire: Date.now() + 60 * 60 * 1000,
-  tokenLength:20
+  tokenLength:20,
+  maxCheck:5
 }
 
 const currentEnvironment = typeof(process.env.NODE_ENV) === 'string' ? process.env.NODE_ENV : 'development'
