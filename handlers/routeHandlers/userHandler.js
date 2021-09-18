@@ -75,19 +75,31 @@ handler._users.get = (requestProperties,callback) => {
   && requestProperties.queryStringObject.phone.trim().length === 11 ? requestProperties.queryStringObject.phone :false
 
   if (phone) {
-    data.read("users",phone,(err,result)=>{
-      const user = {...parseJSON(result)}
-      delete user.password
-      if (!err && user) {
-        callback(200,{
-          data:user
+    // verifing token 
+    let token = typeof requestProperties.headerObject.bearer === 'string'
+                ? requestProperties.headerObject.bearer : false 
+    verifyToken(token,phone,(res)=>{
+      if (res) {
+        data.read("users",phone,(err,result)=>{
+          const user = {...parseJSON(result)}
+          delete user.password
+          if (!err && user) {
+            callback(200,{
+              data:user
+            })
+          }else{
+            callback(404,{
+              error:"User Not Found"
+            })
+          }
         })
       }else{
         callback(404,{
-          error:"User Not Found"
+          error:'Unauthorized User'
         })
       }
     })
+    
   }else{
     callback(404,{
       error:"User Not Found"

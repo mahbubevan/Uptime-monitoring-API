@@ -39,7 +39,6 @@ handler.handleReqRes = (req,res) => {
       requestProperties.body = parseJSON(realData)
 
       chosenHandler(requestProperties,(statusCode,payload)=>{
-        console.log(payload);
         statusCode = typeof(statusCode) === 'number' ? statusCode : 500 
         payload = typeof(payload) === 'object' ? payload : {}
     

@@ -170,7 +170,9 @@ handlers.verifyToken = (id,phone,callback) => {
             }else{
                 callback(false)
             }
-        }callback(false)
+        }else{
+            callback(false)
+        }
     })
 }
 
