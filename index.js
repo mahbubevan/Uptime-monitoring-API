@@ -1,22 +1,11 @@
-// Dependencies 
-const http = require('http')
-const {handleReqRes} = require('./helpers/handleReqRes')
-const env = require('./helpers/env')
+const server = require('./lib/server')
+const workers = require('./lib/worker')
 
-// App object - module scaffolding
 const app = {}
 
-// create server 
-app.createServer = () => {
-    const server = http.createServer(app.handleReqRes);
-    server.listen(env.port,()=>{
-        console.log(`Server Started At Port ${env.port}`);
-    })
+app.init = () => {
+  server.init()
+  workers.init()
 }
 
-// handle request and response 
-app.handleReqRes = handleReqRes
-
-
-// Start THe Server
-app.createServer()
+app.init()
