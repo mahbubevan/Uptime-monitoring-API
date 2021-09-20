@@ -13,6 +13,7 @@ class RegisterForm extends React.Component {
       password:'',
       tosAgreement:false,
       responseCode:200,
+      responseMsg:'',
       error:{
         error:false
       },
@@ -53,7 +54,7 @@ class RegisterForm extends React.Component {
         'Accept':'text/plain'
       }
      
-    }).then(response=>{
+    }).then((response)=>{
       if (response.status===200) {
         this.setState({
           success:true,
@@ -72,14 +73,21 @@ class RegisterForm extends React.Component {
           isAlerted:true
         })
       }
-    }).catch(e=>console.log(e,"ERROR"))
+      return response.text()
+    }).then((data)=>{
+      let dataObject = JSON.parse(data.toString())
+      this.setState({
+        responseMsg:dataObject.message
+      })
+    })
+    .catch(e=>console.log(e,"ERROR"))
   }
 
   render(){
     return (
       <div>
         <div>
-          {this.state.isAlerted ? <AlertComponent code={this.state.responseCode} /> : null}
+          {this.state.isAlerted ? <AlertComponent code={this.state.responseCode} msg={this.state.responseMsg} /> : null}
         </div>
         <form className="row g-3" onSubmit={this.handleSubmit}>
         <div className="col-md-6">

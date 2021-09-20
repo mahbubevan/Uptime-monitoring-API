@@ -52,19 +52,19 @@ handler._users.post = (requestProperties,callback) => {
             })
           }else{
             callback(500,{
-              error:'Couldn\'t create user'
+              message:'Couldn\'t create user'
             })
           }
         })
       }else{
         callback(409,{
-          msg:"User Already Resigtered"
+          message:"User Already Resigtered"
         })
       }
     })
   }else{
     callback(400,{
-      error:'Validation Failed'
+      message:'Validation Failed'
     })
   }
     

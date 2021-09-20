@@ -13,8 +13,8 @@ export default class LoginForm extends React.Component {
         error:false
       },
       success:false,
-      isAlerted:false
-
+      isAlerted:false,
+      isLoggedIn:false
     }
 
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -44,30 +44,23 @@ export default class LoginForm extends React.Component {
       body:JSON.stringify(body),
       headers:{
         'Content-Type':'text/plain',
-        'Accept':'text/plain'
+        'Accept':'application/json'
       }
      
-    }).then(response=>{
-      if (response.status===200) {
-        console.log(response);
-        this.setState({
-          success:true,
-          error:{
-            error:false,
-          },
-          responseCode:response.status,
-          isAlerted:true
-        })        
-      }else{
-        this.setState({
-          error:{
-            error:true,
-          },
-          responseCode:response.status,
-          isAlerted:true
-        })
-      }
-    }).catch(e=>console.log(e,"ERROR"))
+    })
+    .then(result => {
+      this.setState({
+        responseCode:result.status
+      }) 
+      return result.text()
+    })
+    .then((data)=>{
+      let dataObject = JSON.parse(data.toString())
+      document.cookie =`phone=${dataObject.phone};tokenId=${dataObject.id};expires=${dataObject.expires};path=/`
+      this.setState({
+        isLoggedIn:true
+      })
+    }).catch(err=>console.log(err))
 
   }
 
