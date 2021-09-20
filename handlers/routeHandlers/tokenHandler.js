@@ -97,7 +97,7 @@ handler._token.put = (requestProperties,callback) => {
             if(!err && res){
                 let tokenData = {...parseJSON(res)}
                 if (tokenData.expires > Date.now()) {
-                     tokenData.expires = env.tokenExpire
+                     tokenData.expires = env.tokenExpire()
                      data.update('token',id,tokenData,(err)=>{
                          if(!err){
                              callback(200,{
@@ -106,24 +106,24 @@ handler._token.put = (requestProperties,callback) => {
                              })
                          }else{
                              callback(500,{
-                                 error:'Token couldn\'t updated'
+                              message:'Token couldn\'t updated'
                              })
                          }
                      })
                 }else{
                     callback(400,{
-                        error:'Token has been expired'
+                      message:'Token has been expired'
                     })
                 }
             }else{
                 callback(404,{
-                    error:'Invalid Token'
+                  message:'Invalid Token'
                 })
             }
         })
     }else{
         callback(404,{
-            error:'Invalid Request'
+          message:'Invalid Request'
         })
     }
 }
@@ -143,19 +143,19 @@ handler._token.delete = (requestProperties,callback) => {
                         })
                     }else{
                         callback(500,{
-                            error:'Token couldn\'t Deleted'
+                            message:'Token couldn\'t Deleted'
                         })
                     }
                 })
             }else{
                 callback(404,{
-                    error:'Invalid Token'
+                    message:'Invalid Token'
                 })
             }
         })
     }else{
         callback(400,{
-            'error':'Invalid Request'
+            message:'Invalid Request'
         })
     }
 }

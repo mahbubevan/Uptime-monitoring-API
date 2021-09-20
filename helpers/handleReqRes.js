@@ -13,7 +13,7 @@ handler.handleReqRes = (req,res) => {
   const parsedUrl = url.parse(req.url,true)
   const path = parsedUrl.pathname
   const trimmedPath = path.replace(/^\/+|\/+$/g,'')
-  const method = req.method.toLowerCase()
+  const method = req.method.toLowerCase() === 'options' ? 'delete' : req.method.toLowerCase()
   const queryStringObject = parsedUrl.query 
   const headerObject = req.headers
 
@@ -24,7 +24,7 @@ handler.handleReqRes = (req,res) => {
     method,queryStringObject,
     headerObject
   }
-  
+ 
   const decoder = new StringDecoder('utf-8')
   let realData = ''
 

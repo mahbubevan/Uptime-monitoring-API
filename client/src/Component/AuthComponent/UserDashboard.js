@@ -4,10 +4,13 @@ import LoggedOutButton from "./LoggedOutButton";
 class UserDashboard extends React.Component {
   constructor(props){
     super(props)
-
     this.state = {
 
     }
+  }
+
+  componentWillUnmount(){
+    
   }
 
   render()

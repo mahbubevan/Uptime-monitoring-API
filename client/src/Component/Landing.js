@@ -24,11 +24,20 @@ class Landing extends React.Component
   }
 
   onLoggedOutHandle(){
-    this.setState({
-      isLoggedIn:false
-    })
-    let pastDate = new Date(new Date().setDate(new Date().getDate() -1)).toUTCString()
-    document.cookie =`tokenId=;expires=${pastDate};path=/`
+    let x = document.cookie
+    let tokenId = x.split('=')[1]
+    const url = `http://127.0.0.1:3000/token?id=${tokenId}`
+    fetch(url,{method:'DELETE'})
+    .then(res=>res.text())
+    .then(data=>{
+      console.log(data);      
+      let pastDate = new Date(new Date().setDate(new Date().getDate() -1)).toUTCString()
+      document.cookie =`tokenId=;expires=${pastDate};path=/`
+      this.setState({
+        isLoggedIn:false
+      })
+    }).catch(err=>console.log(err))
+    
   }
 
   componentDidMount()
