@@ -1,6 +1,6 @@
 import LoginForm from "./Form/LoginForm"
 
-function Login() {
+function Login(props) {
   return (
     <div>
       <div className='row mb-5'>
@@ -10,7 +10,7 @@ function Login() {
       </div>
       <div className='row'>
         <div className='col-md-12'>
-            <LoginForm />
+            <LoginForm onLoggedIn={props.onLoggedIn}/>
         </div>
       </div>
     </div>)

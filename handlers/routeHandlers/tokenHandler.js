@@ -73,13 +73,13 @@ handler._token.get = (requestProperties,callback) => {
                 callback(200,tokenObject)
             }else{
                 callback(403,{
-                    error:'Unauthorized User'
+                    message:'Unauthorized User'
                 })
             }
         })
     }else{
         callback(404,{
-            error:'Invalid Token'
+            message:'Invalid Token'
         })
     }
 }

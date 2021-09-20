@@ -13,8 +13,7 @@ export default class LoginForm extends React.Component {
         error:false
       },
       success:false,
-      isAlerted:false,
-      isLoggedIn:false
+      isAlerted:false      
     }
 
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -56,10 +55,11 @@ export default class LoginForm extends React.Component {
     })
     .then((data)=>{
       let dataObject = JSON.parse(data.toString())
-      document.cookie =`phone=${dataObject.phone};tokenId=${dataObject.id};expires=${dataObject.expires};path=/`
-      this.setState({
-        isLoggedIn:true
-      })
+      let expireDate = new Date(dataObject.expires).toUTCString()
+
+      document.cookie =`tokenId=${dataObject.id};expires=${expireDate};path=/`
+      this.props.onLoggedIn({isLoggedIn:true})
+
     }).catch(err=>console.log(err))
 
   }
