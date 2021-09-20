@@ -32,7 +32,7 @@ handler._token.post = (requestProperties,callback) => {
         let hashedPassword = hash(password)
         if (hashedPassword === userData.password) {
             let tokenId = createRandomString(env.tokenLength)
-            let expires = env.tokenExpire
+            let expires = env.tokenExpire()
             let tokenObject = {
                 phone,
                 expires,

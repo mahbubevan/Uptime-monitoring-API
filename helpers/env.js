@@ -6,7 +6,9 @@ env.development = {
   envName:'development',
   acceptedMethods:['get','post','put','delete'],
   secretKey:"devSecret",
-  tokenExpire: Date.now() + 60 * 60 * 1000,
+  tokenExpire: function(){
+    return Date.now() + 60 * 60 * 1000
+  },
   tokenLength:20,
   maxCheck:5,
   twilio:{
@@ -21,7 +23,9 @@ env.production = {
   envName:'production',
   acceptedMethods:['get','post','put','delete'],
   secretKey:"productionSecret",
-  tokenExpire: Date.now() + 60 * 60 * 1000,
+  tokenExpire: function(){
+    return Date.now() + 60 * 60 * 1000
+  },
   tokenLength:20,
   maxCheck:5,
   twilio:{
