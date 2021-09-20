@@ -1,12 +1,10 @@
-import Clock from "./Component/Clock";
+import Landing from "./Component/Landing";
 
 function App() {
-  const element = <h1>Hello World</h1>
 
   return (
     <div className="App">
-      {element}
-      <Clock />
+      <Landing />
     </div>
   );
 }
