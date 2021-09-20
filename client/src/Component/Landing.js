@@ -42,8 +42,9 @@ class Landing extends React.Component
 
   componentDidMount()
   {
-    let x = document.cookie
-    let tokenId = x.split('=')[1]
+    const x = document.cookie
+    const tokenId = x.split('=')[1]
+    
     let url = `http://127.0.0.1:3000/token?id=${tokenId}`
     fetch(url).then(res=>res.json())
       .then(data=>{        
@@ -55,11 +56,6 @@ class Landing extends React.Component
         }
       })
       .catch(err=>console.log(err))
-  }
-
-  componentWillUnmount()
-  {
-    
   }
 
   render(){   

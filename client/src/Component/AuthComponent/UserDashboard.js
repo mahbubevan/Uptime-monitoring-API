@@ -1,16 +1,80 @@
 import React from "react";
 import LoggedOutButton from "./LoggedOutButton";
+import CheckList from './Check/CheckList'
+import CreateCheck from "./Check/CreateCheck";
 
 class UserDashboard extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-
+      checkList:[],
+      protocol:'',
+      url:'',
+      method:'',
+      successCodes:[201,200,301],
+      timeoutSeconds:0,
+      token:''
     }
+
+    this.onInputChange = this.onInputChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  componentWillUnmount(){
+  componentDidMount(){
+    const x = document.cookie
+    const tokenId = x.split('=')[1]
     
+    let url = `http://127.0.0.1:3000/token?id=${tokenId}`
+    fetch(url).then(res=>res.json())
+      .then(data=>{
+        const phone = data.phone
+        const id = data.id 
+        this.setState({
+          token:id
+        })
+        let getCheckUrl = `http://127.0.0.1:3000/check`
+        fetch(getCheckUrl).then(res=>res.json())
+        .then(data=>{
+          this.setState({
+            checkList:data.message
+          })
+        })
+      })
+  }
+
+  handleSubmit(e){
+    e.preventDefault()
+    const url = `http://127.0.0.1:3000/check`
+    const body = {
+      protocol:this.state.protocol,
+      url:this.state.url,
+      method:this.state.method,
+      successCodes:this.state.successCodes,
+      timeoutSeconds:this.state.timeoutSeconds
+    }
+    fetch(url,{
+      method:"POST",      
+      body:JSON.stringify(body),
+      headers:{
+        'Content-Type':'text/plain',
+        'Accept':'application/json',
+        'Authorization':`Bearer ${this.state.token}`
+      }
+     
+    }).then(res=>res)
+    .then(data=>{
+      console.log(data);
+    })
+  }
+
+  onInputChange(e){
+    const target = e.target 
+    const value = target.type === 'select-multiple' ? target.options : target.value 
+    const name = target.name
+
+    this.setState({
+      [name]:value
+    })
   }
 
   render()
@@ -19,6 +83,14 @@ class UserDashboard extends React.Component {
       <div className='container'>
         <LoggedOutButton logout={this.props.onLoggedOut}/>
         <h2>User Dashboard</h2>
+        <div className='row mt-5 mb-5'>
+          <div className='col-md-6'>
+            <CheckList checkList={this.state.checkList}/>
+          </div>
+          <div className='col-md-6'>
+            <CreateCheck onFormSubmit={this.handleSubmit} inputVal={this.state} inputChange={this.onInputChange}/>
+          </div>
+        </div>
       </div>
     )
   }

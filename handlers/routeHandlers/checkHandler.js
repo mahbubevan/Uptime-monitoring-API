@@ -123,7 +123,7 @@ handler._check.post = (requestProperties,callback) => {
 
     }else{
       callback(400,{
-        error:'Validation Failed'
+        message:'Validation Failed'
       })
     }
 }
@@ -156,8 +156,24 @@ handler._check.get = (requestProperties,callback) => {
         }
       })
     }else{
-      callback(404,{
-        error:'Data Not Found'
+      data.list('check',(err,checks)=>{
+        if (!err && checks.length > 0) {
+          let dataArray = []
+          checks.forEach(element => {
+            data.read('check',element,(err,checkData)=>{
+              let checkObject = parseJSON(checkData)
+              dataArray.push(checkObject)
+            })
+          });
+          
+          callback(200,{
+            message:dataArray
+          })
+        }else{      
+          callback(404,{
+            message:'Not Found'
+          })
+        }
       })
     }
 }

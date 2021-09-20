@@ -1,5 +1,6 @@
 import React from "react"
 import Button from "./Button"
+import AlertComponent from './AlertComponent'
 
 export default class LoginForm extends React.Component {
   constructor(props){
@@ -54,11 +55,13 @@ export default class LoginForm extends React.Component {
       return result.text()
     })
     .then((data)=>{
-      let dataObject = JSON.parse(data.toString())
-      let expireDate = new Date(dataObject.expires).toUTCString()
+      if (this.state.responseCode === 200) {
+        let dataObject = JSON.parse(data.toString())
+        let expireDate = new Date(dataObject.expires).toUTCString()
 
-      document.cookie =`tokenId=${dataObject.id};expires=${expireDate};path=/`
-      this.props.onLoggedIn({isLoggedIn:true})
+        document.cookie =`tokenId=${dataObject.id};expires=${expireDate};path=/`
+        this.props.onLoggedIn({isLoggedIn:true})
+      }
 
     }).catch(err=>console.log(err))
 
@@ -66,7 +69,11 @@ export default class LoginForm extends React.Component {
 
   render(){
     return (
-      <form className="row g-3" onSubmit={this.handleSubmit}>
+      <div>
+        {
+          this.state.responseCode !== 200 ? <AlertComponent code={this.state.responseCode} msg='Invalid'/> : null
+        }
+        <form className="row g-3" onSubmit={this.handleSubmit}>
         <div className="col-md-6">
           <label htmlFor="inputEmail4" className="form-label">Phone</label>
           <input type="text" value={this.state.phone} name='phone' onChange={this.inputChange} className="form-control" 
@@ -80,6 +87,7 @@ export default class LoginForm extends React.Component {
           <Button title="Login" btnStyle='btn btn-primary'/>
         </div>
       </form>
+      </div>
       )
   }
 }
