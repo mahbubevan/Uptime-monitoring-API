@@ -9,8 +9,7 @@ const {parseJSON} = require('../helpers/utilities')
 const handler = {}
 
 handler.handleReqRes = (req,res) => {
-  //req handling 
-  // get the url and parse it 
+  // get the url and parse it
   const parsedUrl = url.parse(req.url,true)
   const path = parsedUrl.pathname
   const trimmedPath = path.replace(/^\/+|\/+$/g,'')
@@ -31,6 +30,7 @@ handler.handleReqRes = (req,res) => {
 
   const chosenHandler = routes[trimmedPath] ? routes[trimmedPath] : notFoundHandler
   req.on('data',(buffer)=>{
+      
       realData += decoder.write(buffer)
   })
 
@@ -43,8 +43,9 @@ handler.handleReqRes = (req,res) => {
         payload = typeof(payload) === 'object' ? payload : {}
     
         const payloadString = JSON.stringify(payload)
-        res.setHeader('Content-Type','application/json')
+        res.setHeader('Content-Type','text/plain')        
         res.writeHead(statusCode)
+        
         res.end(payloadString)
       })
     

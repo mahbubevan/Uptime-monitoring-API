@@ -1,5 +1,7 @@
 import React from 'react'
+import AlertComponent from './AlertComponent'
 import Button from './Button'
+
 class RegisterForm extends React.Component {
   constructor(props){
     super(props)
@@ -9,7 +11,13 @@ class RegisterForm extends React.Component {
       lastName:'',
       phone:'',
       password:'',
-      tosAgreement:false
+      tosAgreement:false,
+      responseCode:200,
+      error:{
+        error:false
+      },
+      success:false,
+      isAlerted:false
     }
 
     this.handleInputChange = this.handleInputChange.bind(this)
@@ -38,20 +46,42 @@ class RegisterForm extends React.Component {
 
     const url = 'http://127.0.0.1:3000/user'
     fetch(url,{
-      method:'POST',
-      mode:'no-cors',
+      method:"POST",      
       body:JSON.stringify(body),
-      headers: {
-        'Content-Type': 'application/json'        
-      },
+      headers:{
+        'Content-Type':'text/plain',
+        'Accept':'text/plain'
+      }
+     
     }).then(response=>{
-      console.log(response);
-    }).catch(e=>console.log(e))
+      if (response.status===200) {
+        this.setState({
+          success:true,
+          error:{
+            error:false,
+          },
+          responseCode:response.status,
+          isAlerted:true
+        })        
+      }else{
+        this.setState({
+          error:{
+            error:true,
+          },
+          responseCode:response.status,
+          isAlerted:true
+        })
+      }
+    }).catch(e=>console.log(e,"ERROR"))
   }
 
   render(){
     return (
-      <form className="row g-3" onSubmit={this.handleSubmit}>
+      <div>
+        <div>
+          {this.state.isAlerted ? <AlertComponent code={this.state.responseCode} /> : null}
+        </div>
+        <form className="row g-3" onSubmit={this.handleSubmit}>
         <div className="col-md-6">
           <label htmlFor="inputEmail4" className="form-label">First Name</label>
           <input type="text" name='firstName' onChange={this.handleInputChange} value={this.state.firstName} className="form-control" id="inputEmail4"/>
@@ -80,6 +110,7 @@ class RegisterForm extends React.Component {
           <Button title="Sign Up Now" btnStyle='btn btn-success'/>
         </div>
       </form>
+      </div>
       )
   }
 }

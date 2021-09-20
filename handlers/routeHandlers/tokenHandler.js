@@ -49,8 +49,8 @@ handler._token.post = (requestProperties,callback) => {
                 }
             })
         }else{
-            callback(403,{
-                error:'Unauthorized User'
+            callback(404,{
+                error:'User Not Found'
             })
         }
       })
