@@ -39,12 +39,12 @@ handler._check.post = (requestProperties,callback) => {
     ? requestProperties.body.successCodes 
     :false
 
-    let timeoutSeconds = typeof requestProperties.body.timeoutSeconds === 'number' 
+    let timeoutSeconds = typeof parseInt(requestProperties.body.timeoutSeconds) === 'number' 
       && requestProperties.body.timeoutSeconds % 1 === 0
       && requestProperties.body.timeoutSeconds >= 1
       && requestProperties.body.timeoutSeconds <= 5
       ? requestProperties.body.timeoutSeconds :false
-
+    
     if (protocol && url && method && timeoutSeconds) {
       let token = typeof requestProperties.headerObject.bearer === 'string'
           ? requestProperties.headerObject.bearer :false 
@@ -157,17 +157,28 @@ handler._check.get = (requestProperties,callback) => {
       })
     }else{
       data.list('check',(err,checks)=>{
+        console.log(checks);
         if (!err && checks.length > 0) {
-          let dataArray = []
-          checks.forEach(element => {
+          let dataArr = []
+          let checkObject
+          let checkText = ''
+          // checks.forEach(element => {
+          //   data.read('check',element,(err,checkData)=>{
+          //     checkObject = {...parseJSON(checkData)}
+          //     dataObject.element = checkObject
+          //   })
+          // });
+          for (let index = 0; index < checks.length; index++) {
+            const element = checks[index];
             data.read('check',element,(err,checkData)=>{
-              let checkObject = parseJSON(checkData)
-              dataArray.push(checkObject)
+              checkText += checkData
+              checkObject = {...parseJSON(checkData)}
             })
-          });
+          }
+          console.log(dataArr,checkText);
           
           callback(200,{
-            message:dataArray
+            message:dataArr
           })
         }else{      
           callback(404,{

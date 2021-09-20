@@ -2,6 +2,7 @@ import React from "react";
 import LoggedOutButton from "./LoggedOutButton";
 import CheckList from './Check/CheckList'
 import CreateCheck from "./Check/CreateCheck";
+import DefaultOption from "../DefaultOption";
 
 class UserDashboard extends React.Component {
   constructor(props){
@@ -35,6 +36,7 @@ class UserDashboard extends React.Component {
         let getCheckUrl = `http://127.0.0.1:3000/check`
         fetch(getCheckUrl).then(res=>res.json())
         .then(data=>{
+          console.log(data);
           this.setState({
             checkList:data.message
           })
@@ -50,20 +52,30 @@ class UserDashboard extends React.Component {
       url:this.state.url,
       method:this.state.method,
       successCodes:this.state.successCodes,
-      timeoutSeconds:this.state.timeoutSeconds
+      timeoutSeconds:this.state.timeoutSeconds,
+      token:this.state.token
     }
-    fetch(url,{
-      method:"POST",      
-      body:JSON.stringify(body),
-      headers:{
-        'Content-Type':'text/plain',
-        'Accept':'application/json',
-        'Authorization':`Bearer ${this.state.token}`
+    const headerOption = {
+      headers: {
+        'Content-Type': 'text/plain',
+          'Authorization': 'Bearer my-token',
+          'My-Custom-Header': 'foobar'
       }
-     
-    }).then(res=>res)
+    };
+
+    const requestOptions = {
+      method: 'POST',
+      headerOption,
+      credentials:'include',
+      body: JSON.stringify(body)
+  };
+
+    fetch(url,requestOptions).then(res=>res.json())
     .then(data=>{
-      console.log(data);
+      this.setState({
+        checkList:[data.check]
+      })
+      
     })
   }
 
