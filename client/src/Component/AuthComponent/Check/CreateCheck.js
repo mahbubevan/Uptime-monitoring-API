@@ -2,6 +2,7 @@ import Button from './../../Form/Button'
 export default function CreateCheck(props){
     return(
         <div>
+          <h3>Create New Check</h3>
         <form className="row g-3" onSubmit={props.onFormSubmit}>
         <div className="col-md-6">
           <label htmlFor="inputEmail4" className="form-label">Protocol</label>

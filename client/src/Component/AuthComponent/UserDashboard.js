@@ -110,10 +110,10 @@ class UserDashboard extends React.Component {
         <LoggedOutButton logout={this.props.onLoggedOut}/>
         <h2>User Dashboard</h2>
         <div className='row mt-5 mb-5'>
-          <div className='col-md-6'>
+          <div className='col-md-8'>
             <CheckList checkList={this.state.checkList}/>
           </div>
-          <div className='col-md-6'>
+          <div className='col-md-4'>
             <CreateCheck onFormSubmit={this.handleSubmit} inputVal={this.state} inputChange={this.onInputChange}/>
           </div>
         </div>
