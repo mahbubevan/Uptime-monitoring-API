@@ -1,6 +1,6 @@
 function Button(props){
   return (
-    <button type="submit" className={props.btnStyle}>{props.title}</button>
+    <button onClick={props.clickEvent} type={props.type} className={props.btnStyle}>{props.title}</button>
   )
 }
 

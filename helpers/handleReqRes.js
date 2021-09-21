@@ -30,7 +30,6 @@ handler.handleReqRes = (req,res) => {
 
   const chosenHandler = routes[trimmedPath] ? routes[trimmedPath] : notFoundHandler
   req.on('data',(buffer)=>{
-      
       realData += decoder.write(buffer)
   })
 
@@ -38,6 +37,7 @@ handler.handleReqRes = (req,res) => {
       realData += decoder.end()
       requestProperties.body = parseJSON(realData)
       requestProperties.headerObject.bearer = parseJSON(realData).token
+      console.log(requestProperties);
       chosenHandler(requestProperties,(statusCode,payload)=>{
         statusCode = typeof(statusCode) === 'number' ? statusCode : 500 
         payload = typeof(payload) === 'object' ? payload : {}
@@ -45,8 +45,9 @@ handler.handleReqRes = (req,res) => {
         const payloadString = JSON.stringify(payload)
         res.setHeader('Content-Type','application/json')        
         res.setHeader('Access-Control-Allow-Credentials',true)        
-        res.setHeader('Access-Control-Allow-Headers','X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method, Authorization')        
+        res.setHeader('Access-Control-Allow-Headers','X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method, Authorization')                
         res.writeHead(statusCode)
+        
         res.end(payloadString)
       })
     

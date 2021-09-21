@@ -10,7 +10,11 @@ const handlers = {}
 handlers.checkHandler = (requestProperties,callback) => {
 const acceptedMethods = env.acceptedMethods
   if (acceptedMethods.indexOf(requestProperties.method)>-1) {
-      handler._check[requestProperties.method](requestProperties,callback)
+      if (requestProperties.trimmedPath === 'check/update') {
+        handler._check['put'](requestProperties,callback)
+      }else{
+        handler._check[requestProperties.method](requestProperties,callback)
+      }
   }else{
     callback(405)
   }
@@ -219,7 +223,7 @@ handler._check.put = (requestProperties,callback) => {
   const id = typeof requestProperties.body.id === 'string' 
             ? requestProperties.body.id : false
   
-            console.log(id);
+  console.log(id,"I am from PUT");
   //validate inputs 
   let protocol = typeof requestProperties.body.protocol === 'string'
     && ['http','https'].indexOf(requestProperties.body.protocol) > -1 
@@ -238,8 +242,7 @@ handler._check.put = (requestProperties,callback) => {
     ? requestProperties.body.successCodes 
     :false
 
-    let timeoutSeconds = typeof requestProperties.body.timeoutSeconds === 'number' 
-      && requestProperties.body.timeoutSeconds % 1 === 0
+    let timeoutSeconds = requestProperties.body.timeoutSeconds % 1 === 0
       && requestProperties.body.timeoutSeconds >= 1
       && requestProperties.body.timeoutSeconds <= 5
       ? requestProperties.body.timeoutSeconds :false

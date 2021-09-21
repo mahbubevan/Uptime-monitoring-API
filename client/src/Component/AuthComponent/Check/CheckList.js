@@ -1,3 +1,5 @@
+import helpers from "../../../helpers"
+
 export default function CheckList(props){
     const elements = props.checkList
     const count = elements.length
@@ -15,6 +17,7 @@ export default function CheckList(props){
                     <th scope="col">Timeout Seconds</th>
                     <th scope="col">Current State</th>
                     <th scope="col">Last Checked</th>
+                    <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -34,7 +37,15 @@ export default function CheckList(props){
                                     {value.state}
                                 </span>
                             </td>
-                            <td> {new Date(value.lastChecked).toString()} </td>
+                            <td> {helpers.getDateTime(value.lastChecked)} </td>
+                            <td>
+                              <span title='Edit' onClick={props.editHandle.bind(this,value.id)} className='btn btn-sm btn-info text-white me-1'>
+                              <i class="las la-pen"></i>
+                              </span>
+                              <span title='Delete' onClick={props.deleteHandle.bind(this,value.id)} className='btn btn-sm btn-danger text-white'>
+                                <i class="las la-trash"></i>
+                              </span>
+                            </td>
                         </tr>
                     ))
                 }

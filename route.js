@@ -8,7 +8,8 @@ const routes = {
   sample: sampleHandler,
   user:userHandler,
   token:tokenHandler,
-  check:checkHandler
+  check:checkHandler,
+  'check/update':checkHandler
 }
 
 module.exports = routes
