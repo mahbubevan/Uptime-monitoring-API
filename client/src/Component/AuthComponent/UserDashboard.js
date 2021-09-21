@@ -2,7 +2,6 @@ import React from "react";
 import LoggedOutButton from "./LoggedOutButton";
 import CheckList from './Check/CheckList'
 import CreateCheck from "./Check/CreateCheck";
-import DefaultOption from "../DefaultOption";
 
 class UserDashboard extends React.Component {
   constructor(props){
@@ -29,7 +28,7 @@ class UserDashboard extends React.Component {
     let url = `http://127.0.0.1:3000/token?id=${tokenId}`
     fetch(url).then(res=>res.json())
       .then(data=>{
-        const phone = data.phone
+        // const phone = data.phone
         const id = data.id 
         this.setState({
           token:id
