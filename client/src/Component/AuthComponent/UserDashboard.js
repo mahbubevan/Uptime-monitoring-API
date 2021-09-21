@@ -4,6 +4,7 @@ import CheckList from './Check/CheckList';
 import CreateCheck from "./Check/CreateCheck";
 import EditCheck from "./Check/EditCheck";
 import LoggedOutButton from "./LoggedOutButton";
+import UserInfo from "./UserComponent/UserInfo";
 
 class UserDashboard extends React.Component {
   constructor(props){
@@ -59,7 +60,7 @@ class UserDashboard extends React.Component {
 
   deleteHandle(id){
     let checkId = id
-    const url = `http://127.0.0.1:3000/check?id=${checkId}`
+    const url = `http://127.0.0.1:3000/check/delete?id=${checkId}`
 
     const body = {
       token:this.state.token
@@ -72,7 +73,7 @@ class UserDashboard extends React.Component {
     };
 
     const requestOptions = {
-      method: 'DELETE',
+      method: 'POST',
       headerOption,
       credentials:'include',
       body: JSON.stringify(body)
@@ -116,6 +117,7 @@ class UserDashboard extends React.Component {
         
         fetch(getCheckUrl).then(res=>res.json())
         .then(data=>{
+          console.log(data);
           let newArr = data.message.map((val,id)=>{
             return JSON.parse(val.toString())
           })
@@ -270,10 +272,15 @@ class UserDashboard extends React.Component {
             <CheckList editHandle={this.editHandle} deleteHandle={this.deleteHandle} checkList={this.state.checkList}/>
           </div>
           <div className='col-md-4'>
+            <div className='row'>
             {
               this.state.action.edit ? <EditCheck onFormSubmit={this.handleEditSubmit} inputVal={this.state} inputChange={this.onInputChange}/> 
               : <CreateCheck onFormSubmit={this.handleSubmit} inputVal={this.state} inputChange={this.onInputChange}/>
             }
+            </div>
+            <div className='row mt-5 mb-5'>
+              <UserInfo />
+            </div>
           </div>
         </div>
       </div>

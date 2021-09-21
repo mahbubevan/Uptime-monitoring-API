@@ -12,7 +12,10 @@ const acceptedMethods = env.acceptedMethods
   if (acceptedMethods.indexOf(requestProperties.method)>-1) {
       if (requestProperties.trimmedPath === 'check/update') {
         handler._check['put'](requestProperties,callback)
-      }else{
+      }else if(requestProperties.trimmedPath === 'check/delete'){
+        handler._check['delete'](requestProperties,callback)
+      }
+      else{
         handler._check[requestProperties.method](requestProperties,callback)
       }
   }else{
@@ -172,12 +175,13 @@ handler._check.get = (requestProperties,callback) => {
                 if (!err) {
                   let userObject = {...parseJSON(userData)}
                   let checksId = userObject.checks
-                  console.log(checksId,'Checks ID');
-                  if (!checksId) {
+                  
+                  if (checksId.length < 1) {
                     callback(200,{
                       message:[]
                     })
                   }else{
+                    console.log("else");
                     // dependencies 
                     const fs = require('fs')
                     const path = require('path')
@@ -187,7 +191,7 @@ handler._check.get = (requestProperties,callback) => {
                     checksId.forEach(el => {
                       collection.push(fs.readFileSync(`${basedir+dir}/${el}.json`,'utf-8'))
                     });
-                    if (collection.length > 1) {
+                    if (collection.length >= 1) {
                       callback(200,{
                         message:collection
                       })

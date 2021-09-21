@@ -76,8 +76,17 @@ handler._users.get = (requestProperties,callback) => {
 
   if (phone) {
     // verifing token 
-    let token = typeof requestProperties.headerObject.bearer === 'string'
-                ? requestProperties.headerObject.bearer : false 
+    let tokenSource1 = typeof requestProperties.headerObject.bearer === 'string'
+                ? requestProperties.headerObject.bearer : false
+    let tokenSource2 = requestProperties.queryStringObject.tokenId ? requestProperties.queryStringObject.tokenId : false
+
+    let token = ''
+    if (tokenSource1) {
+      token = tokenSource1
+    }else{
+      token = tokenSource2
+    }
+    console.log(token,phone);
     verifyToken(token,phone,(res)=>{
       if (res) {
         data.read("users",phone,(err,result)=>{
