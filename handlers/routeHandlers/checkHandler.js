@@ -156,14 +156,60 @@ handler._check.get = (requestProperties,callback) => {
         }
       })
     }else{
-       data.collection('check',(err,checks)=>{
-        if (!err && checks.length > 0) {
-          callback(200,{
-            message:checks
+      const token = requestProperties.queryStringObject.tokenId
+      data.read('token',token,(err,tokenData)=>{
+        if(!err){
+          let tokenObject = {...parseJSON(tokenData)}
+          let phone = tokenObject.phone 
+          verifyToken(tokenObject.id,phone,(isValidToken)=>{
+            if (isValidToken) {
+              data.read('users',phone,(err,userData)=>{
+                console.log(err,userData);
+                if (!err) {
+                  let userObject = {...parseJSON(userData)}
+                  let checksId = userObject.checks
+                  console.log(checksId,'Checks ID');
+                  if (!checksId) {
+                    callback(404,{
+                      message:'No Checks Found'
+                    })
+                  }else{
+                    // dependencies 
+                    const fs = require('fs')
+                    const path = require('path')
+                    const basedir = path.join(__dirname,'./../../data/')
+                    const dir = 'check'
+                    let collection = []
+                    checksId.forEach(el => {
+                      collection.push(fs.readFileSync(`${basedir+dir}/${el}.json`,'utf-8'))
+                    });
+                    console.log(collection,"Collection");
+                    if (collection.length > 1) {
+                      callback(200,{
+                        message:collection
+                      })
+                    }else{
+                      callback(200,{
+                        message:[]
+                      })
+                    }
+                    
+                  }
+                }else{
+                  callback(404,{
+                    message:'User Not Found'
+                  })
+                }
+              })
+            }else{
+              callback(404,{
+                message:'Token Expired'
+              })
+            }
           })
-        }else{      
+        }else{
           callback(404,{
-            message:'Not Found'
+            message:'Invalid Token'
           })
         }
       })

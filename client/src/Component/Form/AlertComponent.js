@@ -9,7 +9,7 @@ export default function AlertComponent(props){
   }
 
   return (
-    <Alert variant={alertObject[props.code][0]}>
+    <Alert variant={alertObject[props.code]}>
         {props.msg}
     </Alert>
   )
