@@ -13,6 +13,8 @@ export default function CheckList(props){
                     <th scope="col">Method</th>
                     <th scope="col">Success Codes</th>
                     <th scope="col">Timeout Seconds</th>
+                    <th scope="col">Current State</th>
+                    <th scope="col">Last Checked</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -23,8 +25,16 @@ export default function CheckList(props){
                             <td> {value.protocol} </td>
                             <td> {value.url} </td>
                             <td> {value.method} </td>
-                            <td> {value.successCodes} </td>
+                            <td> {value.successCodes.map((val,id)=>{
+                                return val +',\n'
+                            })} </td>
                             <td> {value.timeoutSeconds} </td>
+                            <td> 
+                                <span className={value.state==='up' ? 'badge bg-success' : 'badge bg-danger'}>
+                                    {value.state}
+                                </span>
+                            </td>
+                            <td> {new Date(value.lastChecked).toString()} </td>
                         </tr>
                     ))
                 }

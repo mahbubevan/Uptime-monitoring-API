@@ -42,13 +42,13 @@ class UserDashboard extends React.Component {
         fetch(getCheckUrl).then(res=>res.json())
         .then(data=>{
           console.log(data);
-          // let newArr = data.message.map((val,id)=>{
-          //   return JSON.parse(val.toString())
-          // })
+          let newArr = data.message.map((val,id)=>{
+            return JSON.parse(val.toString())
+          })
 
-          // this.setState({
-          //   checkList:newArr
-          // })
+          this.setState({
+            checkList:newArr
+          })
         })
       })
   }
@@ -112,8 +112,17 @@ class UserDashboard extends React.Component {
   {
     return (
       <div className='container'>
-        <LoggedOutButton logout={this.props.onLoggedOut}/>
-        <h2>User Dashboard</h2>
+        <div className='row mt-5'>
+          <div className='col-md-6'>
+            <h2>User Dashboard</h2>
+          </div>
+          <div className='col-md-6'>
+            <div className='ml-right'>
+              <LoggedOutButton logout={this.props.onLoggedOut}/>  
+            </div>
+          </div>
+        </div>
+        
         <div className='row mt-5 mb-5'>
           <div className='col-md-8'>
             <CheckList checkList={this.state.checkList}/>

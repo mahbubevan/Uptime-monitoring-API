@@ -170,8 +170,8 @@ handler._check.get = (requestProperties,callback) => {
                   let checksId = userObject.checks
                   console.log(checksId,'Checks ID');
                   if (!checksId) {
-                    callback(404,{
-                      message:'No Checks Found'
+                    callback(200,{
+                      message:[]
                     })
                   }else{
                     // dependencies 
@@ -183,7 +183,6 @@ handler._check.get = (requestProperties,callback) => {
                     checksId.forEach(el => {
                       collection.push(fs.readFileSync(`${basedir+dir}/${el}.json`,'utf-8'))
                     });
-                    console.log(collection,"Collection");
                     if (collection.length > 1) {
                       callback(200,{
                         message:collection
