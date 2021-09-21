@@ -8,7 +8,7 @@ export default function CheckList(props){
                 {
                     elements.map((value,id)=>(
                         <li key={id}>
-                            {value}
+                            {value.id} -- {value.url}
                         </li>
                     ))
                 }

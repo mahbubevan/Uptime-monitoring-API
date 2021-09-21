@@ -14,7 +14,8 @@ class UserDashboard extends React.Component {
       method:'',
       successCodes:[201,200,301],
       timeoutSeconds:0,
-      token:''
+      token:'',
+      responseCodes:''
     }
 
     this.onInputChange = this.onInputChange.bind(this)
@@ -36,9 +37,12 @@ class UserDashboard extends React.Component {
         let getCheckUrl = `http://127.0.0.1:3000/check`
         fetch(getCheckUrl).then(res=>res.json())
         .then(data=>{
-          console.log(data);
+          let newArr = data.message.map((val,id)=>{
+            return JSON.parse(val.toString())
+          })
+
           this.setState({
-            checkList:data.message
+            checkList:newArr
           })
         })
       })
@@ -70,13 +74,23 @@ class UserDashboard extends React.Component {
       body: JSON.stringify(body)
   };
 
-    fetch(url,requestOptions).then(res=>res.json())
-    .then(data=>{
+    fetch(url,requestOptions).then(res=>{
       this.setState({
-        checkList:[data.check]
+        responseCodes:res.status
       })
-      
+      return res.json()
     })
+    .then(data=>{
+      if (this.state.responseCodes === 200) {
+        try {
+          this.setState({
+            checkList:[data.check,...this.state.checkList]
+          })
+        } catch (error) {
+        }
+      }
+      
+    }).catch(err=>console.log(err))
   }
 
   onInputChange(e){

@@ -10,7 +10,7 @@ env.development = {
     return Date.now() + 60 * 60 * 1000
   },
   tokenLength:20,
-  maxCheck:5,
+  maxCheck:10,
   twilio:{
     from:'+14695303134',
     accountSid:'AC4986e94addbde77f6b83793a2ea4beba',
@@ -27,7 +27,7 @@ env.production = {
     return Date.now() + 60 * 60 * 1000
   },
   tokenLength:20,
-  maxCheck:5,
+  maxCheck:10,
   twilio:{
     from:'+14695303134',
     accountSid:'AC4986e94addbde77f6b83793a2ea4beba',

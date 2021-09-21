@@ -86,37 +86,37 @@ handler._check.post = (requestProperties,callback) => {
                             })
                           }else{
                             callback(500,{
-                              error:"Problem"
+                              message:"Problem"
                             })
                           }
                         })
                       }else{
                         callback(500,{
-                          error:'Couldn\'t Store The Data'
+                          message:'Couldn\'t Store The Data'
                         })
                       }
                     })
                   }else{
-                    callback(401,{
-                      error:'User already reached max limit'
+                    callback(400,{
+                      message:'User already reached max limit'
                     })
                   }
 
                 }else{
                   callback(403,{
-                    error:'Authentication Problem'
+                    message:'Authentication Problem'
                   })
                 }
               })
             }else{
               callback(403,{
-                error:'Authentication Problem'
+                message:'Authentication Problem'
               })
             }
           })
         }else{
           callback(403,{
-            error:'Authentication Problem'
+            message:'Authentication Problem'
           })
         }
       })
@@ -137,7 +137,7 @@ handler._check.get = (requestProperties,callback) => {
       data.read('check',id,(err,res)=>{
         if(err){
           callback(404,{
-            error:'Not Found'
+            message:'Not Found'
           })
         }else{
           let token = typeof requestProperties.headerObject.bearer === 'string'
@@ -156,29 +156,10 @@ handler._check.get = (requestProperties,callback) => {
         }
       })
     }else{
-      data.list('check',(err,checks)=>{
-        console.log(checks);
+       data.collection('check',(err,checks)=>{
         if (!err && checks.length > 0) {
-          let dataArr = []
-          let checkObject
-          let checkText = ''
-          // checks.forEach(element => {
-          //   data.read('check',element,(err,checkData)=>{
-          //     checkObject = {...parseJSON(checkData)}
-          //     dataObject.element = checkObject
-          //   })
-          // });
-          for (let index = 0; index < checks.length; index++) {
-            const element = checks[index];
-            data.read('check',element,(err,checkData)=>{
-              checkText += checkData
-              checkObject = {...parseJSON(checkData)}
-            })
-          }
-          console.log(dataArr,checkText);
-          
           callback(200,{
-            message:dataArr
+            message:checks
           })
         }else{      
           callback(404,{
