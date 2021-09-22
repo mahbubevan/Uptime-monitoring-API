@@ -32,7 +32,9 @@ class UserInfo extends React.Component{
         return(
             <div>
                 <h4>User Informaation</h4>
-                <UnorderdList data={this.state.userInfo}/>
+                {
+                    this.state.isLoaded ? <UnorderdList data={this.state.userInfo}/> : null
+                }
             </div>
         )
     }
