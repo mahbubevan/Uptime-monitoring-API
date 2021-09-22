@@ -137,7 +137,7 @@ class RegistrationForm extends React.Component {
       </div>
     </div>
     </section>
-    </main>
+   </main>
       )
   }
 }

@@ -88,7 +88,7 @@ export default class LoginForm extends React.Component {
                     }
                   </div>
                   <div class="card-body">
-                    <form role="form" onSubmit={this.handleSubmit}>
+                    <form onSubmit={this.handleSubmit}>
                       <label>Phone</label>
                       <div class="mb-3">
                         <input type="phone" value={this.state.phone} name='phone' onChange={this.inputChange} class="form-control" placeholder="Phone" aria-label="Email" aria-describedby="email-addon" />

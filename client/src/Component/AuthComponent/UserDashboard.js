@@ -3,7 +3,6 @@ import Button from "../Form/Button";
 import CheckList from './Check/CheckList';
 import CreateCheck from "./Check/CreateCheck";
 import EditCheck from "./Check/EditCheck";
-import LoggedOutButton from "./LoggedOutButton";
 import UserInfo from "./UserComponent/UserInfo";
 
 class UserDashboard extends React.Component {
@@ -116,11 +115,15 @@ class UserDashboard extends React.Component {
         let getCheckUrl = `http://127.0.0.1:3000/check?tokenId=${id}`
         
         fetch(getCheckUrl).then(res=>res.json())
-        .then(data=>{
-          console.log(data);
-          let newArr = data.message.map((val,id)=>{
-            return JSON.parse(val.toString())
-          })
+        .then(data=>{ 
+          let newArr = []         
+          try {
+            newArr = data.message.map((val,id)=>{
+              return JSON.parse(val.toString())
+            })
+          } catch (error) {
+            this.props.logoutHandle()
+          }
 
           this.setState({
             checkList:newArr
@@ -258,11 +261,8 @@ class UserDashboard extends React.Component {
           <div className='col-md-6'>
             <div className='row'>
               <div className='col-md-6'>
-                <Button clickEvent={this.checkCreateForm} type='button' title='Check Create Form' btnStyle='btn btn-sm btn-info text-white' />
-              </div>
-              <div className='col-md-6'>
-                <LoggedOutButton logout={this.props.onLoggedOut}/>  
-              </div>
+                
+              </div>              
             </div>
           </div>
         </div>
@@ -272,6 +272,7 @@ class UserDashboard extends React.Component {
             <CheckList editHandle={this.editHandle} deleteHandle={this.deleteHandle} checkList={this.state.checkList}/>
           </div>
           <div className='col-md-4'>
+          <Button clickEvent={this.checkCreateForm} type='button' title='Check Create Form' btnStyle='btn btn-sm btn-info text-white' />
             <div className='row'>
             {
               this.state.action.edit ? <EditCheck onFormSubmit={this.handleEditSubmit} inputVal={this.state} inputChange={this.onInputChange}/> 

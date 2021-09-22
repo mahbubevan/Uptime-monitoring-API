@@ -10,7 +10,8 @@ const routes = {
   token:tokenHandler,
   check:checkHandler,
   'check/update':checkHandler,
-  'check/delete':checkHandler
+  'check/delete':checkHandler,
+  'token/verify':tokenHandler,
 }
 
 module.exports = routes

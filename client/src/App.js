@@ -1,5 +1,5 @@
 import Landing from "./Component/Landing";
-import {BrowserRouter as Router,Route,Link ,Switch} from 'react-router-dom'
+import {BrowserRouter as Router,Route ,Switch,Redirect} from 'react-router-dom'
 import Register from "./Component/Register";
 import Login from "./Component/Login";
 import UserDashboard from "./Component/AuthComponent/UserDashboard"
@@ -17,9 +17,8 @@ class App extends React.Component {
       isLoggedIn:false 
     }
     
-    this.onLoggedInHandle = this.onLoggedInHandle.bind(this)
-    this.onLoggedOutHandle = this.onLoggedOutHandle.bind(this)
-
+    this.onLoggedInHandle = this.onLoggedInHandle.bind(this)    
+    this.onLoggedOutHandle = this.onLoggedOutHandle.bind(this)    
   }
 
   onLoggedInHandle(obj){
@@ -29,19 +28,9 @@ class App extends React.Component {
   }
 
   onLoggedOutHandle(){
-    let x = document.cookie
-    let tokenId = x.split('=')[1]
-    const url = `http://127.0.0.1:3000/token?id=${tokenId}`
-    fetch(url,{method:'DELETE'})
-    .then(res=>res.text())
-    .then(data=>{     
-      let pastDate = new Date(new Date().setDate(new Date().getDate() -1)).toUTCString()
-      document.cookie =`tokenId=;expires=${pastDate};path=/`
-      this.setState({
-        isLoggedIn:false
-      })
-    }).catch(err=>console.log(err))
-    
+    this.setState({
+      isLoggedIn:false
+    })
   }
 
   componentDidMount()
@@ -66,16 +55,22 @@ class App extends React.Component {
     return (
       <div className="App">
         <Router>
-          <Navbar sitename={helpers.getSiteName()}/>
+          <Navbar loggedIn={this.state.isLoggedIn} logoutHandle={this.onLoggedOutHandle} sitename={helpers.getSiteName()}/>
           <Switch>
-              <Route path='/dashboard'>
-                <UserDashboard />
+              <Route path='/dashboard'>                
+                {
+                  this.state.isLoggedIn ? <UserDashboard logoutHandle={this.onLoggedOutHandle}/> : <Redirect to="/login" />
+                }
               </Route>              
               <Route path="/login">
-                <Login onLoggedIn={this.onLoggedInHandle} />
+                {
+                  this.state.isLoggedIn ? <Redirect to="/dashboard" /> : <Login onLoggedIn={this.onLoggedInHandle} />
+                }                
               </Route>
               <Route path="/register">
-                <Register />
+                { 
+                  this.state.isLoggedIn ? <Redirect to="/dashboard" /> : <Register />
+                }                
               </Route>          
               <Route path="/">
                 <Landing />

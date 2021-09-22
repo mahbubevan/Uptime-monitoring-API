@@ -1,3 +1,5 @@
+import helpers from "../../helpers"
+
 export default function UnorderdList(props){
     
     return(
@@ -16,7 +18,7 @@ export default function UnorderdList(props){
             </li>
             <li class="list-group-item d-flex justify-content-between">
                 <span> Total Checks Count </span>
-                <span> {props.data.checks.length} </span>
+                <span> {helpers.getLength(props.data.checks)} </span>
             </li>
         </ul>
     )

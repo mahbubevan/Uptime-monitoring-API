@@ -176,7 +176,7 @@ handler._check.get = (requestProperties,callback) => {
                   let userObject = {...parseJSON(userData)}
                   let checksId = userObject.checks
                   
-                  if (checksId.length < 1) {
+                  if (!checksId) {
                     callback(200,{
                       message:[]
                     })

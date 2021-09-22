@@ -10,7 +10,11 @@ const handlers = {}
 handlers.tokenHandler = (requestProperties,callback) => {
     const acceptedMethods = env.acceptedMethods
   if (acceptedMethods.indexOf(requestProperties.method)>-1) {
+    if (requestProperties.trimmedPath === 'token/verify') {
+      handler._token['verify'](requestProperties,callback)
+    }else{
       handler._token[requestProperties.method](requestProperties,callback)
+    }
   }else{
     callback(405)
   }
@@ -158,6 +162,33 @@ handler._token.delete = (requestProperties,callback) => {
             message:'Invalid Request'
         })
     }
+}
+
+handler._token.verify = (requestProperties,callback) => {
+  const tokenId = typeof requestProperties.queryStringObject.id === 'string'
+  && requestProperties.queryStringObject.id.trim().length === env.tokenLength
+  ? requestProperties.queryStringObject.id : false 
+
+  if (tokenId) {
+      data.read('token',tokenId,(err,res)=>{
+        const tokenObject = {...parseJSON(res)}
+        if (tokenObject.expires > Date.now()) {
+          callback(200,{
+            message:'Token Is Valid',
+            isTokenValid:true
+          })
+        }else{
+          callback(200,{
+            message:'Token Is Invalid',
+            isTokenValid:false
+          })
+        }  
+      })
+  }else{
+      callback(404,{
+          message:'Invalid Token'
+      })
+  }
 }
 
 handlers.verifyToken = (id,phone,callback) => {
