@@ -6,8 +6,7 @@ import Header from "./Header/Header"
 
 function Main(props){
   return (
-    <div>
-      
+    <div>      
       <Header />
       <DetailSection />
       <TechnologySection />

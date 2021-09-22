@@ -1,6 +1,7 @@
 import React from "react"
-import Button from "./Button"
 import AlertComponent from './AlertComponent'
+import { Link } from "react-router-dom"
+import bg from './img/curved-10.jpg'
 
 export default class LoginForm extends React.Component {
   constructor(props){
@@ -68,26 +69,57 @@ export default class LoginForm extends React.Component {
   }
 
   render(){
+    const styleSheet = {
+      backgroundImage:`url(${bg})`
+    }
     return (
-      <div>
-        {
-          this.state.responseCode !== 200 ? <AlertComponent code={this.state.responseCode} msg='Invalid'/> : null
-        }
-        <form className="row g-3" onSubmit={this.handleSubmit}>
-        <div className="col-md-6">
-          <label htmlFor="inputEmail4" className="form-label">Phone</label>
-          <input type="text" value={this.state.phone} name='phone' onChange={this.inputChange} className="form-control" 
-          id="inputEmail4"/>
+      <main class="main-content  mt-0">
+      <section>
+        <div class="page-header min-vh-75">
+          <div class="container">
+            <div class="row">
+              <div class="col-xl-4 col-lg-5 col-md-6 d-flex flex-column mx-auto">
+                <div class="card card-plain mt-8">
+                  <div class="card-header pb-0 text-left bg-transparent">
+                    <h3 class="font-weight-bolder text-info text-gradient">Welcome back</h3>
+                    <p class="mb-0">Enter your email and password to sign in</p>
+                    {
+                      this.state.responseCode !== 200 ? <AlertComponent code={this.state.responseCode} msg='Invalid'/> : null
+                    }
+                  </div>
+                  <div class="card-body">
+                    <form role="form" onSubmit={this.handleSubmit}>
+                      <label>Phone</label>
+                      <div class="mb-3">
+                        <input type="phone" value={this.state.phone} name='phone' onChange={this.inputChange} class="form-control" placeholder="Phone" aria-label="Email" aria-describedby="email-addon" />
+                      </div>
+                      <label>Password</label>
+                      <div class="mb-3">
+                        <input type="password" value={this.state.password} name='password' onChange={this.inputChange} class="form-control" placeholder="Password" aria-label="Password" aria-describedby="password-addon" />
+                      </div>
+                      <div class="text-center">
+                        <button type="submit" class="btn bg-gradient-info w-100 mt-4 mb-0">Sign in</button>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="card-footer text-center pt-0 px-lg-2 px-1">
+                    <p class="mb-4 text-sm mx-auto">
+                      Don't have an account?
+                      <Link to='/register' class="text-info text-gradient font-weight-bold">Sign up</Link>
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="oblique position-absolute top-0 h-100 d-md-block d-none me-n8">
+                  <div class="oblique-image bg-cover position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6" style={styleSheet}></div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="col-md-6">
-          <label htmlFor="inputPassword4" className="form-label">Password</label>
-          <input type="password" value={this.state.password} name='password' onChange={this.inputChange} className="form-control" id="inputPassword4"/>
-        </div>
-        <div className="col-12">
-          <Button title="Login" btnStyle='btn btn-primary'/>
-        </div>
-      </form>
-      </div>
-      )
+      </section>
+    </main>
+    )
   }
 }

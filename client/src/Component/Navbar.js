@@ -8,9 +8,9 @@ export default function Navbar(props)
         <div className="col-12">
           <nav className="navbar navbar-expand-lg  blur blur-rounded top-0 z-index-fixed shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
             <div className="container-fluid">
-              <a className="navbar-brand font-weight-bolder ms-sm-3" href="https://demos.creative-tim.com/soft-ui-design-system/index.html" rel="tooltip" title="Designed and Coded by Creative Tim" data-placement="bottom" target="_blank">
+              <Link to='/' className="navbar-brand font-weight-bolder ms-sm-3">
                 {props.sitename}
-              </a>
+              </Link>
               <button className="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon mt-2">
                   <span className="navbar-toggler-bar bar1"></span>
