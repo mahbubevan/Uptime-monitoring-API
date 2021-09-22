@@ -8,4 +8,8 @@ helpers.getDateTime = (stringDate) => {
   return date
 }
 
+helpers.getSiteName = () => {
+  return 'Uptime Monitoring API'
+}
+
 export default helpers

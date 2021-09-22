@@ -1,6 +1,7 @@
 import React from "react"
 import UserDashboard from "./AuthComponent/UserDashboard"
 import Login from "./Login"
+import Main from "./Main"
 import Register from "./Register"
 
 class Landing extends React.Component
@@ -61,21 +62,22 @@ class Landing extends React.Component
   render(){   
      
     return(
-      <div>
-        {
-        this.state.isLoggedIn ? <UserDashboard onLoggedOut={this.onLoggedOutHandle}/> : <div className='container'>
+    //   <div>
+    //     {
+    //     this.state.isLoggedIn ? <UserDashboard onLoggedOut={this.onLoggedOutHandle}/> : <div className='container'>
         
-        <div className='row mt-5'>
-          <div className='col-md-12'>
-            <Register />
-          </div>
-          <div className='col-md-6'>
-            <Login onLoggedIn={this.onLoggedInHandle} />
-          </div>
-        </div>
-    </div>
-      }
-      </div>
+    //     <div className='row mt-5'>
+    //       <div className='col-md-12'>
+    //         <Register />
+    //       </div>
+    //       <div className='col-md-6'>
+    //         <Login onLoggedIn={this.onLoggedInHandle} />
+    //       </div>
+    //     </div>
+    // </div>
+    //   }
+    //   </div>
+      <Main />
     )
   }
 }
